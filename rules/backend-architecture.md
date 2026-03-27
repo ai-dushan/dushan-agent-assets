@@ -1,7 +1,9 @@
 ---
+description: 后端架构决策硬约束（分层、注入、VO 穿透等 8 条不可违反规则）
 trigger: always_on
 scope: backend
-author: DuShan Team
+author: 渡山源码
+project: dushan-admin-backend
 ---
 
 # 后端架构决策（绝对不能违反）

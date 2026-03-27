@@ -1,7 +1,8 @@
 ---
 description: 【工作流】后端代码审查 — L0 Lint → L1 MCP 分析 → L2 深度审查 → 评分报告
 scope: backend
-author: DuShan Team
+author: 渡山源码
+project: dushan-admin-backend
 ---
 
 # /review — 后端代码审查

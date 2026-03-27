@@ -1,7 +1,8 @@
 ---
 description: 【工作流】前端开发辅助 — 加载规范 → 编写代码 → Lint 验收
 scope: frontend
-author: DuShan Team
+author: 渡山源码
+project: dushan-admin-frontend
 ---
 
 # /frontend-dev — 前端开发辅助

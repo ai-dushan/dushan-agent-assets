@@ -1,7 +1,9 @@
 ---
+description: 后端全局编码原则（面向对象、类型注解、异步、分层等 11 条基准规范）
 trigger: always_on
 scope: backend
-author: DuShan Team
+author: 渡山源码
+project: dushan-admin-backend
 ---
 
 # 后端全局编码原则

@@ -1,7 +1,9 @@
 ---
+description: 前端全局编码原则（script setup、Tailwind 样式、ID 类型、API 调用等 10 条基准规范）
 trigger: always_on
 scope: frontend
-author: DuShan Team
+author: 渡山源码
+project: dushan-admin-frontend
 ---
 
 # 前端全局编码原则

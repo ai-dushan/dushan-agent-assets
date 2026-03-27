@@ -1,7 +1,8 @@
 ---
 description: 【工作流】后端开发辅助 — 加载规范 → 编写代码 → Lint 验收
 scope: backend
-author: DuShan Team
+author: 渡山源码
+project: dushan-admin-backend
 ---
 
 # /backend-dev — 后端开发辅助

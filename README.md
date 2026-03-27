@@ -22,7 +22,7 @@ name: backend-architecture
 description: 后端架构决策
 trigger: always_on
 scope: backend          # universal / frontend / backend
-author: DuShan Team
+author: 渡山源码
 ---
 ```
 
@@ -33,7 +33,7 @@ author: DuShan Team
 name: backend-lint
 description: 后端代码规范检查
 scope: backend          # universal / frontend / backend
-author: DuShan Team
+author: 渡山源码
 ---
 ```
 
