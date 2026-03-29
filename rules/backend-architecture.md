@@ -1,5 +1,5 @@
 ---
-description: 后端架构决策硬约束（分层、注入、VO 穿透等 8 条不可违反规则）
+description: 【规则】后端架构决策 — 8 条不可违反规则
 trigger: always_on
 scope: backend
 author: 渡山源码

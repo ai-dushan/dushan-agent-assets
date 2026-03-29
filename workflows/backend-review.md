@@ -13,9 +13,9 @@ project: dushan-admin-backend
 
 ```yaml
 # ── 审查配置 ──
-review_depth: full              # full: L0+L1+L2 / quick: L0+L1 only
-fix_after_review: ask           # ask: 报告后询问 / never: 只报告不修
-architecture_docs: false        # 是否加载架构文档（复杂改动时手动开启）
+review_depth: full # full: L0+L1+L2 / quick: L0+L1 only
+fix_after_review: ask # ask: 报告后询问 / never: 只报告不修
+architecture_docs: false # 是否加载架构文档（复杂改动时手动开启）
 
 # ── 评分维度 ──
 scoring:

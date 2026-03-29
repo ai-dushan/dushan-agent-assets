@@ -1,5 +1,5 @@
 ---
-description: 后端全局编码原则（面向对象、类型注解、异步、分层等 11 条基准规范）
+description: 【规则】后端全局编码原则 — 11 条基准规范
 trigger: always_on
 scope: backend
 author: 渡山源码

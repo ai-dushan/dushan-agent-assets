@@ -39,28 +39,65 @@ dushan-agent-assets/
 
 ### 字段定义
 
-| 字段 | 类型 | Rules | Workflows | Skills | 说明 |
-|------|------|:-----:|:---------:|:------:|------|
-| `description` | string | 必须 | 必须 | 必须 | 资产描述，Skills 用 `>` 多行语法 |
-| `project` | string | 推荐 | 推荐 | 推荐 | 所属项目名，用于过滤 |
-| `scope` | string | 推荐 | 推荐 | 推荐 | 适用范围 |
-| `author` | string | 推荐 | 推荐 | 推荐 | 作者或团队 |
-| `trigger` | string | 推荐 | - | - | 触发方式（Rules 专用） |
-| `name` | string | - | - | 推荐 | 技能名称（Skills 专用） |
+| 字段          | 类型   | Rules | Workflows | Skills | 说明                       |
+| ------------- | ------ | :---: | :-------: | :----: | -------------------------- |
+| `description` | string | 必须  |   必须    |  必须  | 资产描述（命名规范见下方） |
+| `project`     | string | 必须  |   必须    |  推荐  | 所属项目名，用于过滤       |
+| `scope`       | string | 必须  |   必须    |  推荐  | 适用范围                   |
+| `author`      | string | 推荐  |   推荐    |  推荐  | 作者或团队                 |
+| `trigger`     | string | 推荐  |     -     |   -    | 触发方式（Rules 专用）     |
+| `name`        | string |   -   |     -     |  推荐  | 技能名称（Skills 专用）    |
+
+### description 命名规范
+
+**格式**：`【资产类型】scope标题 — 概要描述`
+
+方括号内放**资产类型**（工作流 / 规则 / 技能），scope 信息（前端/后端/DevOps）放在标题正文中。
+此格式确保在 IDE 的 `/` 斜杠命令选择器中一眼区分资产类型和所属领域。
+
+**Rules 示例**：
+
+```
+【规则】后端全局编码原则 — 11 条基准规范
+【规则】后端架构决策 — 8 条不可违反规则
+【规则】前端全局编码原则 — 10 条基准规范
+【规则】DevOps 编码规范 — module_devops 模块化架构
+```
+
+**Workflows 示例**：
+
+```
+【工作流】后端开发辅助 — 加载规范 → 编写代码 → Lint 验收
+【工作流】后端代码审查 — L0 Lint → L1 MCP → L2 深度 → 评分报告
+【工作流】前端开发辅助 — 加载规范 → 编写代码 → Lint 验收
+【工作流】DevOps 开发辅助 — 加载规范 → 编写代码 → 验收
+```
+
+**Skills 示例**（使用 `>` 多行语法）：
+
+```
+【技能】后端 Lint — Python/SQL 代码规范检查
+【技能】前端 Lint — Vue/TypeScript 代码规范检查
+【技能】资产编写指南 — Skills/Workflows/Rules 编写规范
+```
 
 ### 字段值约束
 
 **`project`（项目名）**：
+
 - 必须与生态模块 key 严格匹配
-- 当前有效值：`dushan-admin-backend`、`dushan-admin-frontend`、`dushan-agent-assets`、`dushan-devops`、`dushan-codegen-mcp`、`dushan-devops-mcp`
+- 当前有效值：`dushan-admin-backend`、`dushan-admin-frontend`、`dushan-agent-assets`、`dushan-devops`、`dushan-codegen-mcp`、`dushan-graph-mcp`
 - 不设 `project` 的资产被视为"通用"，在"全部/通用"过滤下展示
 
 **`scope`（适用范围）**：
+
 - `backend` — 后端专属
 - `frontend` — 前端专属
+- `devops` — DevOps 专属
 - `universal` — 通用（默认值）
 
 **`trigger`（触发方式，Rules 专用）**：
+
 - `always_on` — 始终生效
 - `on_demand` — 按需触发
 
@@ -72,13 +109,12 @@ dushan-agent-assets/
 
 ```yaml
 ---
-description: 简要描述此规则的作用（一行）
+description: 【规则】后端全局编码原则 — 概要描述
 trigger: always_on
 scope: backend
 author: 渡山源码
 project: dushan-admin-backend
 ---
-
 # 规则标题
 
 1. 规则条目一 — 简要说明
@@ -87,6 +123,7 @@ project: dushan-admin-backend
 ```
 
 **编写要求**：
+
 - 每条规则一行，编号列表
 - 用 `—` 分隔规则名和说明
 - 聚焦"不可违反"的硬约束，避免建议性描述
@@ -96,7 +133,7 @@ project: dushan-admin-backend
 
 ```yaml
 ---
-description: 【工作流】简要描述工作流目的
+description: 【工作流】后端开发辅助 — 步骤概要
 scope: backend
 author: 渡山源码
 project: dushan-admin-backend
@@ -124,6 +161,7 @@ project: dushan-admin-backend
 ```
 
 **编写要求**：
+
 - 使用 `## Step N:` 格式编号步骤
 - 每个步骤明确输入/输出/操作
 - 涉及 MCP 调用的步骤写明具体工具和参数
@@ -173,6 +211,7 @@ project: dushan-agent-assets
 ```
 
 **编写要求**：
+
 - `name` 必须与目录名一致
 - `description` 使用 `>` 多行语法，首行为技能分类标签
 - 必须包含"何时使用"和"何时不使用"章节
@@ -197,6 +236,7 @@ python scripts/validate_frontmatter.py ../../../dushan-agent-assets --format jso
 ```
 
 校验内容包括：
+
 - frontmatter 是否存在且格式正确
 - `description` 是否缺失
 - `project` 值是否在有效范围内
@@ -208,13 +248,16 @@ python scripts/validate_frontmatter.py ../../../dushan-agent-assets --format jso
 ## 常见问题
 
 **Q: Rules 和 Workflows 的 `description` 有什么区别？**
+
 - Rules 的 `description` 直接作为标题下方的提示显示
 - Workflows 的 `description` 同时作为斜杠命令的描述
 
 **Q: 通用 Skill 需要设 `project` 吗？**
+
 - 不需要。不设 `project` 的资产在"全部/通用"中展示
 - 如果某 Skill 仅服务于特定项目，必须设 `project`
 
 **Q: 如何让新增的 `project` 值出现在过滤下拉框？**
+
 - frontmatter 中写入 `project: 新项目名` 即可
 - DevOps 前端会自动收集所有 `project` 值，无需额外注册

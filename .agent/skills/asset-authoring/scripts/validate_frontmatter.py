@@ -24,22 +24,32 @@ class AssetCategory(StrEnum):
 
 
 # ── 有效值常量 ──
-VALID_PROJECTS = frozenset({
-    "dushan-admin-backend",
-    "dushan-admin-frontend",
-    "dushan-agent-assets",
-    "dushan-devops",
-    "dushan-codegen-mcp",
-    "dushan-devops-mcp",
-})
+VALID_PROJECTS = frozenset(
+    {
+        "dushan-admin-backend",
+        "dushan-admin-frontend",
+        "dushan-agent-assets",
+        "dushan-devops",
+        "dushan-codegen-mcp",
+        "dushan-graph-mcp",
+    }
+)
 
 VALID_SCOPES = frozenset({"backend", "frontend", "universal"})
 
 VALID_TRIGGERS = frozenset({"always_on", "on_demand"})
 
-FRONTMATTER_ALLOWED_KEYS = frozenset({
-    "description", "name", "trigger", "scope", "author", "project", "license",
-})
+FRONTMATTER_ALLOWED_KEYS = frozenset(
+    {
+        "description",
+        "name",
+        "trigger",
+        "scope",
+        "author",
+        "project",
+        "license",
+    }
+)
 
 
 def _extract_frontmatter(text: str) -> dict | None:
@@ -110,12 +120,14 @@ def validate_file(file_path: Path) -> list[dict]:
     issues: list[dict] = []
 
     def _add(severity: Severity, rule: str, msg: str):
-        issues.append({
-            "file": str(file_path),
-            "severity": severity.value,
-            "rule": rule,
-            "message": msg,
-        })
+        issues.append(
+            {
+                "file": str(file_path),
+                "severity": severity.value,
+                "rule": rule,
+                "message": msg,
+            }
+        )
 
     text = file_path.read_text(encoding="utf-8")
     category = _detect_category(file_path)
@@ -135,7 +147,8 @@ def validate_file(file_path: Path) -> list[dict]:
     project_val = meta.get("project", "")
     if project_val and project_val not in VALID_PROJECTS:
         _add(
-            Severity.WARNING, "FM-3",
+            Severity.WARNING,
+            "FM-3",
             f"`project: {project_val}` 不在已知项目列表中，"
             f"有效值: {', '.join(sorted(VALID_PROJECTS))}",
         )
@@ -146,7 +159,8 @@ def validate_file(file_path: Path) -> list[dict]:
     scope_val = meta.get("scope", "")
     if scope_val and scope_val not in VALID_SCOPES:
         _add(
-            Severity.WARNING, "FM-5",
+            Severity.WARNING,
+            "FM-5",
             f"`scope: {scope_val}` 无效，有效值: {', '.join(sorted(VALID_SCOPES))}",
         )
 
@@ -157,7 +171,8 @@ def validate_file(file_path: Path) -> list[dict]:
         dir_name = _detect_skill_dir_name(file_path)
         if name_val and name_val != dir_name:
             _add(
-                Severity.ERROR, "FM-6",
+                Severity.ERROR,
+                "FM-6",
                 f"`name: {name_val}` 与目录名 `{dir_name}` 不一致",
             )
         if not name_val:
@@ -168,7 +183,8 @@ def validate_file(file_path: Path) -> list[dict]:
         trigger_val = meta.get("trigger", "")
         if trigger_val and trigger_val not in VALID_TRIGGERS:
             _add(
-                Severity.WARNING, "FM-8",
+                Severity.WARNING,
+                "FM-8",
                 f"`trigger: {trigger_val}` 无效，有效值: {', '.join(sorted(VALID_TRIGGERS))}",
             )
         if not trigger_val:
@@ -178,7 +194,8 @@ def validate_file(file_path: Path) -> list[dict]:
     unknown_keys = set(meta.keys()) - FRONTMATTER_ALLOWED_KEYS
     if unknown_keys:
         _add(
-            Severity.INFO, "FM-10",
+            Severity.INFO,
+            "FM-10",
             f"发现未知 frontmatter 字段: {', '.join(sorted(unknown_keys))}",
         )
 
@@ -189,7 +206,11 @@ def scan_directory(root: Path) -> list[dict]:
     """递归扫描目录中所有资产 MD 文件。"""
     all_issues: list[dict] = []
 
-    for category in (AssetCategory.SKILLS, AssetCategory.WORKFLOWS, AssetCategory.RULES):
+    for category in (
+        AssetCategory.SKILLS,
+        AssetCategory.WORKFLOWS,
+        AssetCategory.RULES,
+    ):
         cat_dir = root / category
         if not cat_dir.exists():
             continue
@@ -201,12 +222,14 @@ def scan_directory(root: Path) -> list[dict]:
                     if skill_md.exists():
                         all_issues.extend(validate_file(skill_md))
                     else:
-                        all_issues.append({
-                            "file": str(child),
-                            "severity": Severity.ERROR,
-                            "rule": "DIR-1",
-                            "message": f"Skill 目录 `{child.name}` 缺少 SKILL.md",
-                        })
+                        all_issues.append(
+                            {
+                                "file": str(child),
+                                "severity": Severity.ERROR,
+                                "rule": "DIR-1",
+                                "message": f"Skill 目录 `{child.name}` 缺少 SKILL.md",
+                            }
+                        )
         else:
             for md_file in sorted(cat_dir.glob("*.md")):
                 if md_file.name == "README.md":
@@ -226,7 +249,9 @@ def _format_summary(issues: list[dict]) -> str:
     warn_count = sum(1 for i in issues if i["severity"] == Severity.WARNING)
     info_count = sum(1 for i in issues if i["severity"] == Severity.INFO)
 
-    lines.append(f"扫描完成: {error_count} ERROR / {warn_count} WARNING / {info_count} INFO\n")
+    lines.append(
+        f"扫描完成: {error_count} ERROR / {warn_count} WARNING / {info_count} INFO\n"
+    )
 
     # 按文件分组
     by_file: dict[str, list[dict]] = {}
