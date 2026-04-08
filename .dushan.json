@@ -1,0 +1,9 @@
+{
+  "name": "Agent 资产库",
+  "description": "AI Agent 资产仓库：Skills / Workflows / Rules 模板",
+  "author": "渡山",
+  "version": "auto",
+  "tags": ["assets", "skills", "workflows"],
+  "visible": true,
+  "icon": "node"
+}
