@@ -1,20 +1,31 @@
 ---
-description: 【规则】前端全局编码原则 — 10 条基准规范
+description: 【规则】前端全局编码入口 — 强制从 codegen-mcp 获取规则
 trigger: always_on
 scope: frontend
 author: 渡山源码
 project: dushan-admin-frontend
 ---
 
-# 前端全局编码原则
+# 前端开发强制规则
 
-1. 必须 `<script setup lang="ts">`，禁止 Options API / defineComponent
-2. 禁止 `<style>` / `<style scoped>` / `<style lang="scss">`，样式用 Tailwind + Element Plus CSS 变量
-3. 禁止 Tailwind `dark:` 前缀，暗黑模式通过 Element Plus CSS 变量适配
-4. ID 类型统一 `number`，包括 ref、getData、函数参数
-5. 页面不直接用 `requestClient`，通过 `#/api/` 调用
-6. 枚举选项用 `getDictOptions(DICT_TYPE.XXX)` 动态获取，禁止硬编码
-7. 文件名 kebab-case，禁止非空断言 `!.`（改用 `?.` + `??`）
-8. 禁止向后兼容代码、死代码、孤岛代码
-9. 编写/修改代码前，调用 MCP `get_rules_for_file(file_path)` 获取该文件类型的详细规范
-10. 编写/修改代码后，运行 frontend-lint Skill 检查规范
+> ⚠️ 所有前端编码规范由 `dushan-codegen-mcp` 知识库统一管理。
+
+**核心指令**：
+
+1. 编写任何前端代码之前，必须通过 CLI 获取最新规则：
+
+```bash
+cd dushan-mcp/dushan-codegen-mcp
+python -m cli rules <file_path> --mode codegen --format json
+```
+
+2. 必须加载并遵循 `.agent/skills/frontend-dev/SKILL.md` 的开发流程。
+
+3. 编写完成后，必须运行 Lint 验收：
+
+```bash
+cd .agent/skills/lint/scripts
+python lint_frontend.py <file_path> --format summary
+```
+
+> 禁止在此文件内硬编码具体规则条目。规则的唯一源头是 codegen-mcp 知识库。

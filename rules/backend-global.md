@@ -1,21 +1,31 @@
 ---
-description: 【规则】后端全局编码原则 — 11 条基准规范
+description: 【规则】后端全局编码入口 — 强制从 codegen-mcp 获取规则
 trigger: always_on
 scope: backend
 author: 渡山源码
 project: dushan-admin-backend
 ---
 
-# 后端全局编码原则
+# 后端开发强制规则
 
-1. 面向对象优先，一个文件一个核心类，单文件 ≤ 500 行，单方法 ≤ 100 行
-2. 完整路径导入，禁止相对导入，禁止创建 `__init__.py`
-3. 类型注解用内置类型，`X | None` 替代 Optional，禁止 `dict[str, Any]` 作参数
-4. 禁止硬编码字符串/枚举值，使用枚举、常量、配置（settings/builder）
-5. 异常用 `ServiceException` + `ErrorCodeConstants`，禁止 `except Exception: pass`
-6. 所有方法 `async def`，禁止 async 中阻塞调用
-7. 文件头 docstring 必须有（职责/依赖/被调用，≤6 行）
-8. 禁止向后兼容代码、防御性获取、死代码、孤岛代码
-9. 禁止硬编码默认值，配置通过 ConfigBuilder 唯一入口获取
-10. 编写/修改代码前，调用 MCP `get_rules_for_file(file_path)` 获取该文件类型的详细规范
-11. 编写/修改代码后，运行 backend-lint Skill 检查规范
+> ⚠️ 所有后端编码规范由 `dushan-codegen-mcp` 知识库统一管理。
+
+**核心指令**：
+
+1. 编写任何后端代码之前，必须通过 CLI 获取最新规则：
+
+```bash
+cd dushan-mcp/dushan-codegen-mcp
+python -m cli rules <file_path> --mode codegen --format json
+```
+
+2. 必须加载并遵循 `.agent/skills/backend-dev/SKILL.md` 的 Step 0 Preflight 门禁。
+
+3. 编写完成后，必须运行 Lint 验收：
+
+```bash
+cd .agent/skills/lint/scripts
+python dushan_lint.py <file_path> --format summary
+```
+
+> 禁止在此文件内硬编码具体规则条目。规则的唯一源头是 codegen-mcp 知识库。
